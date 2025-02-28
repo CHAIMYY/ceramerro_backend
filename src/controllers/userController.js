@@ -39,3 +39,14 @@ exports.login = async function (req, res) {
     return res.status(500).send({ message: 'Error in authentication' });
   }
 };
+
+
+
+exports.getAllartisans= async (req, res) => {
+    try {
+        const artisanList = await User.find({ role: 'artisan' });
+      res.json(artisanList);
+    } catch (err) {
+      res.status(500).json({ message: 'Error fetching artisans list', error: err });
+    }
+  };
