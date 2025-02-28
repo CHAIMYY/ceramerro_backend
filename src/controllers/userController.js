@@ -17,9 +17,7 @@ exports.register = async function (req, res) {
       console.log('Registration Error: ', err);
       return res.status(400).send({ message: err.message });
     }
-  };
-
-
+}
 
 exports.login = async function (req, res) {
   try {
