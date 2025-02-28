@@ -17,3 +17,11 @@ exports.authenticate = async (req, res, next) => {
     next(new ErrorHandler("Token Has Been Changed", 401));
   }
 };
+
+
+const isAdmin = (req, res, next) => {
+    if (req.user.role !== 'admin') {
+      return res.sendStatus(403);
+    }
+    next();
+  };
