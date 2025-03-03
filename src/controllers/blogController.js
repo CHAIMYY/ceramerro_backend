@@ -21,3 +21,13 @@ res.json(updatepost);
     res.status(500).json({message: "failed updating post", error:err});
 }
 }
+
+exports.deletePost = async (req, res) =>{
+    try{
+    const deletepost = await Blog.findByIdAndDelete(req.params.id, req.body);
+    if(!deletepost) return res.status(404).json({message: 'could not find post'})
+    res.json({message:"post deleted"});
+    }catch(err){
+        res.status(500).json({message: "failed deleting post", error:err});
+    }
+    }
