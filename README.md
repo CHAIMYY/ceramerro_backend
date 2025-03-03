@@ -12,11 +12,10 @@ Ceramerro is a specialized e-commerce platform designed for ceramic artisans to 
   - JWT-based authentication
   - Role-based access (Admin, Artisan, Customer)
   - Secure password management
-  - Social authentication (Google, Facebook)
+  
   
 - **Artisan Management**
   - Artisan profile creation and management
-  - Portfolio and showcase management
   - Sales dashboard and analytics
   - Order management system
   
@@ -53,63 +52,8 @@ Ceramerro is a specialized e-commerce platform designed for ceramic artisans to 
 - **Runtime Environment**: Node.js
 - **Framework**: Express.js
 - **Database**: MongoDB with Mongoose
-- **Authentication**: JWT, Passport.js
-- **File Storage**: AWS S3
-- **Payment Processing**: Stripe API
-- **Email Service**: Nodemailer with SendGrid
-- **Validation**: Joi
-- **Documentation**: Swagger/OpenAPI
+- **Authentication**: JWT
 
-## 🏗️ Project Structure
-
-```
-├── config/                 # Configuration files
-│   ├── db.js               # Database connection
-│   ├── auth.js             # Authentication config
-│   └── aws.js              # AWS S3 configuration
-├── controllers/            # Request handlers
-│   ├── auth.js             # Authentication controllers
-│   ├── users.js            # User management
-│   ├── artisans.js         # Artisan-specific controllers
-│   ├── products.js         # Product management
-│   ├── orders.js           # Order processing
-│   ├── payment.js          # Payment processing
-│   └── blog.js             # Blog content management
-├── middleware/             # Custom middleware
-│   ├── auth.js             # Authentication middleware
-│   ├── validation.js       # Request validation
-│   ├── uploads.js          # File upload handling
-│   └── errorHandler.js     # Global error handler
-├── models/                 # Database models
-│   ├── User.js             # User model
-│   ├── Artisan.js          # Artisan profile model
-│   ├── Product.js          # Product model
-│   ├── Order.js            # Order model
-│   ├── Payment.js          # Payment records
-│   └── Post.js             # Blog post model
-├── routes/                 # API routes
-│   ├── auth.js             # Authentication routes
-│   ├── users.js            # User routes
-│   ├── artisans.js         # Artisan routes
-│   ├── products.js         # Product routes
-│   ├── orders.js           # Order routes
-│   ├── payment.js          # Payment routes
-│   └── blog.js             # Blog content routes
-├── services/               # Business logic
-│   ├── email.js            # Email service
-│   ├── storage.js          # File storage service
-│   ├── payment.js          # Payment processing
-│   └── analytics.js        # Business analytics
-├── utils/                  # Utility functions
-│   ├── validators.js       # Custom validators
-│   ├── formatters.js       # Response formatters
-│   └── helpers.js          # Common helper functions
-├── app.js                  # Express application setup
-├── server.js               # Server entry point
-├── .env.example            # Example environment variables
-├── package.json            # Project dependencies
-└── README.md               # Project documentation
-```
 
 ## 🔧 Setup and Installation
 
@@ -145,56 +89,6 @@ Ceramerro is a specialized e-commerce platform designed for ceramic artisans to 
    npm run dev
    ```
 
-## 🔒 Environment Variables
-
-Create a `.env` file in the root directory with the following variables:
-
-```
-# Server
-PORT=5000
-NODE_ENV=development
-
-# Database
-MONGODB_URI=mongodb://localhost:27017/ceramerro
-
-# Authentication
-JWT_SECRET=your_jwt_secret_key
-JWT_EXPIRE=24h
-REFRESH_TOKEN_SECRET=your_refresh_token_secret
-REFRESH_TOKEN_EXPIRE=7d
-
-# AWS S3
-AWS_ACCESS_KEY_ID=your_aws_access_key
-AWS_SECRET_ACCESS_KEY=your_aws_secret_key
-AWS_BUCKET_NAME=your_bucket_name
-AWS_REGION=your_aws_region
-
-# Email (SendGrid)
-SENDGRID_API_KEY=your_sendgrid_api_key
-EMAIL_FROM=noreply@ceramerro.com
-
-# Stripe
-STRIPE_SECRET_KEY=your_stripe_secret_key
-STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
-
-# Admin
-ADMIN_EMAIL=admin@ceramerro.com
-ADMIN_PASSWORD=initial_admin_password
-```
-
-## 🚦 API Endpoints
-
-The API documentation is available through Swagger at `/api-docs` when the server is running.
-
-### Main Endpoint Groups:
-
-- **Authentication**: `/api/auth`
-- **Users**: `/api/users`
-- **Artisans**: `/api/artisans`
-- **Products**: `/api/products`
-- **Orders**: `/api/orders`
-- **Payments**: `/api/payments`
-- **Blog**: `/api/blog`
 
 ## 🧪 Testing
 
@@ -259,4 +153,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## 🤝 Support
 
-For support, please email support@ceramerro.com or open an issue in this repository.
+Made with ❤️ .
