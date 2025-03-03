@@ -148,7 +148,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## 👥 Contributors
 
-- [Founder Name](https://github.com/CHAIMYY)
+- [HOUAS CHAIMAA](https://github.com/CHAIMYY)
 
 
 ## 🤝 Support
