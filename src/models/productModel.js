@@ -6,8 +6,10 @@ const ProduitSchema = new mongoose.Schema({
     prix: Number,
     stock: Number,
     categorie: String,
-    images: [String]
-});
+    images: [String],
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+  });
+  
 
 const Product = mongoose.model('Product' , ProduitSchema);
 
