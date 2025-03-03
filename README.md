@@ -148,8 +148,8 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## 👥 Contributors
 
-- [Founder Name](https://github.com/founder)
-- [Lead Developer](https://github.com/lead-dev)
+- [Founder Name](https://github.com/CHAIMYY)
+
 
 ## 🤝 Support
 
