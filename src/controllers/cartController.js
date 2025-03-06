@@ -4,7 +4,7 @@ const Cart = require("../models/cartModel");
 exports.addToCart = async (req, res) => {
     try {
         const { user, produit, quantity } = req.body;
-        console.log(user, produit, quantity);
+        
         
         let cart = await Cart.findOne({ user: user });
 
@@ -24,6 +24,5 @@ exports.addToCart = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
 
 
