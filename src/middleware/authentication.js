@@ -11,7 +11,8 @@ exports.authenticate = async (req, res, next) => {
   try {
     const token = authHeaders.split(" ")[1];
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
-    req.user = await User.findById(decoded.id);
+    req.user = await User.findById(decoded._id);
+  
     next();
   } catch (err) {
     next(new ErrorHandler("Token Has Been Changed", 401));
