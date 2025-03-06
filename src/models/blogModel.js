@@ -33,17 +33,7 @@ const BlogSchema = new mongoose.Schema(
     likes: {
       type: Number,
       default: 0,
-    },
-    comments: [
-      {
-        text: { type: String, required: true },
-        createdAt: { type: Date, default: Date.now },
-        postedBy: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
-        },
-      },
-    ],
+    }
   },
   { timestamps: true } 
 );

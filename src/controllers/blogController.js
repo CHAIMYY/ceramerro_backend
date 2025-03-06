@@ -35,36 +35,79 @@ exports.deletePost = async (req, res) => {
   }
 };
 
-exports.addComment = async (req, res) => {
-  try {
-    const post = await Blog.findById(req.params.id);
 
-    if (!post) {
-      return res.status(404).json({ message: "Could not find the post" });
-    }
+// exports.deleteComment = async (req, res) => {
+//   try {
+//     const { postId, commentId } = req.params;
+//     const userId = req.user.id;
+//     // req.userData.userId
+//     const post = await Blog.findById(postId);
 
-    const { text, postedBy } = req.body;
+//     if (!post) {
+//       return res.status(404).json({ message: "Post not found" });
+//     }
 
-    if (!text) {
-      return res.status(400).json({ message: "Comment text is required" });
-    }
+//     const comment = post.comments.id(commentId);
 
-    if (!postedBy) {
-      return res.status(400).json({ message: "User ID is required" });
-    }
+//     if (!comment) {
+//       return res.status(404).json({ message: "Comment not found" });
+//     }
 
-    const newComment = {
-      text,
-      postedBy,
-      createdAt: new Date(),
-    };
+//     if (comment.postedBy.toString() !== userId) {
+//       return res
+//         .status(403)
+//         .json({
+//           message: "Unauthorized: You can only delete your own comments",
+//         });
+//     }
 
-    post.comments.push(newComment);
-    await post.save();
+//     post.comments.pull(commentId);
 
-    res.status(201).json(post);
-  } catch (err) {
-    console.error("Error adding comment:", err);
-    res.status(500).json({ message: "Failed to add comment" }); 
-  }
-};
+//     await post.save();
+
+//     res.json({ message: "Comment deleted successfully", postId, commentId });
+//   } catch (err) {
+//     console.error("Error deleting comment:", err);
+//     res.status(500).json({ message: "Failed to delete comment" });
+//   }
+// };
+
+
+  
+ 
+// exports.deleteComment = async (req, res) => {
+
+//     try {
+//       const { postId, commentId } = req.params;
+//       console.log(postId, commentId);
+//       const userId = req.user._id; 
+//       console.log('okkkkkkkkk', userId);
+      
+    
+//       const post = await Blog.findById(postId);
+      
+//       if (!post) {
+//         return res.status(404).json({ message: "Post not found" });
+//       }
+      
+//       const comment = post.comments.id(commentId);
+      
+//       if (!comment) {
+//         return res.status(404).json({ message: "Comment not found" });
+//       }
+      
+//       if (comment.postedBy.toString() !== userId.toString()) {
+//         return res.status(403).json({ message: "Unauthorized: You can only delete your own comments" });
+//       }
+      
+//       post.comments.pull(commentId);
+      
+//       await post.save();
+      
+//       res.json({ message: "Comment deleted successfully" });
+      
+//     } catch (err) {
+//       console.error("Error deleting comment:", err);
+//       res.status(500).json({ message: "Failed to delete comment" });
+//     }
+//   };

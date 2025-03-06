@@ -28,8 +28,14 @@ exports.login = async function (req, res) {
         .json({ message: "Authentication failed. Invalid user or password." });
     }
 
+const payload = {
+
+  email: user.email, lastname: user.lastname, firstname: user.firstname, _id: user._id 
+}
+console.log(payload);
+
     const token = jwt.sign(
-      { email: user.email, nom: user.nom, prenom: user.prenom, _id: user._id },
+      payload,
       process.env.JWT_SECRET || "RESTFULAPIs"
     );
 
