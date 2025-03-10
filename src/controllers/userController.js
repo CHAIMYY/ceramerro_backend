@@ -3,20 +3,74 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 
+// exports.register = async function (req, res) {
+//   try {
+//     const newUser = new User(req.body);
+//     newUser.hash_password = bcrypt.hashSync(req.body.password, 10);
+//     //10 Salt Rounds
+//     //   Salt is a random string added to the password before hashing.
+//     const user = await newUser.save();
+//     user.hash_password = undefined;
+//     return res.json(user);
+//   } catch (err) {
+//     console.log("Registration Error: ", err);
+//     return res.status(400).send({ message: err.message });
+//   }
+// };
+
+
 exports.register = async function (req, res) {
   try {
-    const newUser = new User(req.body);
-    newUser.hash_password = bcrypt.hashSync(req.body.password, 10);
-    //10 Salt Rounds
-    //   Salt is a random string added to the password before hashing.
+    const { role } = req.body;
+    let newUser;
+
+    if (role === 'client') {
+      
+      newUser = new User({
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        email: req.body.email,
+        password: req.body.password,
+        role: 'client', 
+      });
+    } else if (role === 'artisan') {
+     
+      newUser = new User({
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        email: req.body.email,
+        password: req.body.password,
+        role: 'artisan', 
+        name: req.body.name,
+        specialty: req.body.specialty,
+        bio: req.body.bio,
+        location: req.body.location,
+        image: req.body.image,
+        gallery: req.body.gallery,
+        category: req.body.category,
+        featured: req.body.featured,
+        socialMedia: req.body.socialMedia,
+        process: req.body.process,
+      });
+    } else {
+      return res.status(400).send({ message: 'Invalid role type' });
+    }
+
+    newUser.hash_password = bcrypt.hashSync(req.body.password, 10); 
+
     const user = await newUser.save();
+
     user.hash_password = undefined;
+
     return res.json(user);
+
   } catch (err) {
     console.log("Registration Error: ", err);
     return res.status(400).send({ message: err.message });
   }
 };
+
+
 
 exports.login = async function (req, res) {
   try {
