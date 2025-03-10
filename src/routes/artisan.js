@@ -1,0 +1,10 @@
+const express = require("express");
+const router = express.Router();
+const { updateProfile, getProductsByArtisan, getSellerStatistics } = require("../controllers/artisanController");
+const { authenticate }  = require('../middleware/authentication');
+
+router.put("/updateProfile", authenticate, updateProfile);
+router.get("/products", authenticate, getProductsByArtisan);
+router.get("/stats", authenticate, getSellerStatistics);
+
+module.exports = router;

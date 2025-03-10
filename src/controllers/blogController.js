@@ -3,11 +3,28 @@ const Blog = require("../models/blogModel");
 
 exports.createPost = async (req, res) => {
   try {
-    const post = new Blog(req.body);
-    await post.save();
-    return res.json(post);
+    console.log(req.user);
+    
+    if (!req.user) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+   
+    const post = new Blog({
+      ...req.body,
+      creator: req.user._id
+    });
+    
+    
+    const savedPost = await post.save();
+    
+   
+    return res.status(201).json(savedPost);
   } catch (err) {
-    res.status(500).json({ message: "failed creating post", error: err });
+    console.error("Error creating product:", err);
+   
+    return res
+      .status(500)
+      .json({ message: "Failed creating a product", error: err.message });
   }
 };
 
