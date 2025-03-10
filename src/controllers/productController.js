@@ -3,7 +3,9 @@ const Product = require("../models/productModel");
 
 exports.createProduct = async (req, res) => {
   try {
+    const userId = req.user._id
     const product = new Product(req.body);
+    
     await product.save();
     return res.status(201).json(product);
   } catch (err) {

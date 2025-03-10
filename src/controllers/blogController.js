@@ -3,11 +3,28 @@ const Blog = require("../models/blogModel");
 
 exports.createPost = async (req, res) => {
   try {
-    const post = new Blog(req.body);
-    await post.save();
-    return res.json(post);
+    console.log(req.user);
+    
+    if (!req.user) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+   
+    const post = new Blog({
+      ...req.body,
+      creator: req.user._id
+    });
+    
+    
+    const savedPost = await post.save();
+    
+   
+    return res.status(201).json(savedPost);
   } catch (err) {
-    res.status(500).json({ message: "failed creating post", error: err });
+    console.error("Error creating product:", err);
+   
+    return res
+      .status(500)
+      .json({ message: "Failed creating a product", error: err.message });
   }
 };
 
@@ -111,3 +128,36 @@ exports.deletePost = async (req, res) => {
 //       res.status(500).json({ message: "Failed to delete comment" });
 //     }
 //   };
+
+
+exports.likeBlogPost = async (req, res, next) => {
+  try {
+    const blogPost = await BlogPost.findById(req.params.id);
+
+    if (!blogPost) {
+      return res.status(404).json({
+        success: false,
+        error: 'Blog post not found'
+      });
+    }
+
+    // Check if the post has already been liked by this user
+    if (blogPost.likes.includes(req.user.id)) {
+      // Unlike the post
+      const removeIndex = blogPost.likes.indexOf(req.user.id);
+      blogPost.likes.splice(removeIndex, 1);
+    } else {
+      // Like the post
+      blogPost.likes.push(req.user.id);
+    }
+
+    await blogPost.save();
+
+    res.status(200).json({
+      success: true,
+      data: blogPost
+    });
+  } catch (err) {
+    next(err);
+  }
+};
