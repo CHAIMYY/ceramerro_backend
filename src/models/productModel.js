@@ -10,11 +10,7 @@ const ProduitSchema = new mongoose.Schema({
       ref: 'Category',
       required: true
     },
-    artisan: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Artisan',
-      required: true
-    },
+
     stock: {
       type: Number,
       required: [true, 'Please add stock quantity'],
@@ -49,17 +45,10 @@ const ProduitSchema = new mongoose.Schema({
       default: false
     },
     images: [String],
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    
-    createdAt: {
-      type: Date,
-      default: Date.now
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now
-    }
-  });
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+  },
+  { timestamps: true }
+);
   
 
 const Product = mongoose.model('Product' , ProduitSchema);
