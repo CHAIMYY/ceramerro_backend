@@ -4,9 +4,9 @@ const { authenticate }  = require('../middleware/authentication');
 const { addToCart, updateProductQuantity, removeFromCart} = require('../controllers/cartController');
 
 
-router.post("/create", addToCart);
-router.put("/quantity", updateProductQuantity);
-router.delete("/remove", removeFromCart)
+router.post("/add", authenticate, addToCart);
+router.put("/quantity", authenticate, updateProductQuantity);
+router.delete("/remove", authenticate, removeFromCart)
 
 
 
