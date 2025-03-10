@@ -111,3 +111,36 @@ exports.deletePost = async (req, res) => {
 //       res.status(500).json({ message: "Failed to delete comment" });
 //     }
 //   };
+
+
+exports.likeBlogPost = async (req, res, next) => {
+  try {
+    const blogPost = await BlogPost.findById(req.params.id);
+
+    if (!blogPost) {
+      return res.status(404).json({
+        success: false,
+        error: 'Blog post not found'
+      });
+    }
+
+    // Check if the post has already been liked by this user
+    if (blogPost.likes.includes(req.user.id)) {
+      // Unlike the post
+      const removeIndex = blogPost.likes.indexOf(req.user.id);
+      blogPost.likes.splice(removeIndex, 1);
+    } else {
+      // Like the post
+      blogPost.likes.push(req.user.id);
+    }
+
+    await blogPost.save();
+
+    res.status(200).json({
+      success: true,
+      data: blogPost
+    });
+  } catch (err) {
+    next(err);
+  }
+};
