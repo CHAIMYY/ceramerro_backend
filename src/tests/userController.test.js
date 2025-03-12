@@ -112,7 +112,30 @@ describe("User Controller", () => {
         });
       });
   
-
+      it('should return 500 on server error', async () => {
+        const req = {
+          body: {
+            email: 'test@example.com',
+            password: 'password123'
+          }
+        };
+        const res = {
+          json: jest.fn(),
+          status: jest.fn().mockReturnThis(),
+          send: jest.fn()
+        };
+        
+        const error = new Error('Database error');
+        User.findOne.mockRejectedValue(error);
+        
+        await userController.login(req, res);
+        
+        expect(User.findOne).toHaveBeenCalledWith({ email: req.body.email });
+        expect(res.status).toHaveBeenCalledWith(500);
+        expect(res.send).toHaveBeenCalledWith({ 
+          message: 'Error in authentication' 
+        });
+      });
 
   });
 });
