@@ -151,7 +151,21 @@ describe("Product Controller", () => {
                       message: 'could not find the product' 
                     });
                   });
-                  
+
+                  it('should return 500 when product deletion fails', async () => {
+                    const error = new Error('Database error');
+                    Product.findByIdAndDelete.mockRejectedValue(error);
+                    
+                    await productController.deleteProduct(req, res);
+                    
+                    expect(res.status).toHaveBeenCalledWith(500);
+                    expect(res.error).toHaveBeenCalledWith({ 
+                      message: 'failed deleting a product', 
+                      error: error 
+                    });
+                  });
+            
+
               });
         });
 
