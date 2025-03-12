@@ -72,7 +72,7 @@ describe("Product Controller", () => {
 
 
         describe('updateProduct', () => {
-            
+
             it('should update a product and return it', async () => {
                 const updatedProduct = {
                   _id: 'product123',
@@ -89,6 +89,19 @@ describe("Product Controller", () => {
                   { new: true }
                 );
                 expect(res.json).toHaveBeenCalledWith(updatedProduct);
+              });
+
+
+
+              it('should return 404 when product is not found for update', async () => {
+                Product.findByIdAndUpdate.mockResolvedValue(null);
+                
+                await productController.updateProduct(req, res);
+                
+                expect(res.status).toHaveBeenCalledWith(404);
+                expect(res.json).toHaveBeenCalledWith({ 
+                  message: 'could not find the product' 
+                });
               });
         });
 
