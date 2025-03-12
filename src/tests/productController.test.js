@@ -189,7 +189,18 @@ describe("Product Controller", () => {
                     expect(res.json).toHaveBeenCalledWith(mockProducts);
                   });
 
-
+                  it('should return 500 when fetching all products fails', async () => {
+                    const error = new Error('Database error');
+                    Product.find.mockRejectedValue(error);
+                    
+                    await productController.getAllProduct(req, res);
+                    
+                    expect(res.status).toHaveBeenCalledWith(500);
+                    expect(res.json).toHaveBeenCalledWith({ 
+                      message: 'Error fetching products list', 
+                      error: error 
+                    });
+                  });
 
               })
 
