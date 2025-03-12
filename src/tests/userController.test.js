@@ -55,5 +55,32 @@ describe("User Controller", () => {
       );
       expect(res.json).toHaveBeenCalledWith({ token: "mockToken" });
     });
+
+
+    it('should return 401 when user is not found', async () => {
+        const req = {
+          body: {
+            email: 'nonexistent@example.com',
+            password: 'password123'
+          }
+        };
+        const res = {
+          json: jest.fn(),
+          status: jest.fn().mockReturnThis(),
+          send: jest.fn()
+        };
+        
+        User.findOne.mockResolvedValue(null);
+        
+        await userController.login(req, res);
+        
+        expect(User.findOne).toHaveBeenCalledWith({ email: req.body.email });
+        expect(res.status).toHaveBeenCalledWith(401);
+        expect(res.json).toHaveBeenCalledWith({ 
+          message: 'Authentication failed. Invalid user or password.' 
+        });
+      });
+
+
   });
 });
