@@ -196,6 +196,17 @@ describe("Product Controller", () => {
         expect(Product.findById).toHaveBeenCalledWith("product123");
         expect(res.json).toHaveBeenCalledWith(mockProduct);
       });
+
+      it("should return 404 when product is not found", async () => {
+        Product.findById.mockResolvedValue(null);
+
+        await productController.getProductById(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(404);
+        expect(res.json).toHaveBeenCalledWith({
+          message: "product not found",
+        });
+      });
     });
   });
 });
