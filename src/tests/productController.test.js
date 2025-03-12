@@ -141,7 +141,17 @@ describe("Product Controller", () => {
                     });
                   });
 
-
+                  it('should return 404 when product is not found for deletion', async () => {
+                    Product.findByIdAndDelete.mockResolvedValue(null);
+                    
+                    await productController.deleteProduct(req, res);
+                    
+                    expect(res.status).toHaveBeenCalledWith(404);
+                    expect(res.json).toHaveBeenCalledWith({ 
+                      message: 'could not find the product' 
+                    });
+                  });
+                  
               });
         });
 
