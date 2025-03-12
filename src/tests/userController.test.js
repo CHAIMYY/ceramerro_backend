@@ -82,5 +82,37 @@ describe("User Controller", () => {
       });
 
 
+      it('should return 401 when password is incorrect', async () => {
+        const req = {
+          body: {
+            email: 'test@example.com',
+            password: 'wrongpassword'
+          }
+        };
+        const res = {
+          json: jest.fn(),
+          status: jest.fn().mockReturnThis(),
+          send: jest.fn()
+        };
+        
+        const mockUser = {
+          email: 'test@example.com',
+          comparePassword: jest.fn().mockReturnValue(false)
+        };
+        
+        User.findOne.mockResolvedValue(mockUser);
+        
+        await userController.login(req, res);
+        
+        expect(User.findOne).toHaveBeenCalledWith({ email: req.body.email });
+        expect(mockUser.comparePassword).toHaveBeenCalledWith('wrongpassword');
+        expect(res.status).toHaveBeenCalledWith(401);
+        expect(res.json).toHaveBeenCalledWith({ 
+          message: 'Authentication failed. Invalid user or password.' 
+        });
+      });
+  
+
+
   });
 });
