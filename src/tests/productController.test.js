@@ -66,9 +66,30 @@ describe("Product Controller", () => {
               error: error 
             });
           });
-        
+        });
 
 
 
-    });
+
+        describe('updateProduct', () => {
+            
+            it('should update a product and return it', async () => {
+                const updatedProduct = {
+                  _id: 'product123',
+                  ...req.body
+                };
+                
+                Product.findByIdAndUpdate.mockResolvedValue(updatedProduct);
+                
+                await productController.updateProduct(req, res);
+                
+                expect(Product.findByIdAndUpdate).toHaveBeenCalledWith(
+                  'product123',
+                  req.body,
+                  { new: true }
+                );
+                expect(res.json).toHaveBeenCalledWith(updatedProduct);
+              });
+        });
+
 });
