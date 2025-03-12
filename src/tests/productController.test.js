@@ -103,6 +103,20 @@ describe("Product Controller", () => {
                   message: 'could not find the product' 
                 });
               });
+
+
+              it('should return 500 when product update fails', async () => {
+                const error = new Error('Database error');
+                Product.findByIdAndUpdate.mockRejectedValue(error);
+                
+                await productController.updateProduct(req, res);
+                
+                expect(res.status).toHaveBeenCalledWith(500);
+                expect(res.error).toHaveBeenCalledWith({ 
+                  message: 'failed updating a product', 
+                  error: error 
+                });
+              });
         });
 
 });
