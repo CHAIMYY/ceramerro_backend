@@ -117,6 +117,32 @@ describe("Product Controller", () => {
                   error: error 
                 });
               });
+
+
+              describe('deleteProduct', () => {
+
+                it('should delete a product and return success message', async () => {
+                    const deletedProduct = {
+                      _id: 'product123',
+                      name: 'Test Product'
+                    };
+                    
+                    Product.findByIdAndDelete.mockResolvedValue(deletedProduct);
+                    
+                    await productController.deleteProduct(req, res);
+                    
+                    expect(Product.findByIdAndDelete).toHaveBeenCalledWith(
+                      'product123',
+                      req.body
+                    );
+                    expect(res.status).toHaveBeenCalledWith(201);
+                    expect(res.json).toHaveBeenCalledWith({ 
+                      message: 'product deleted succefully' 
+                    });
+                  });
+
+
+              });
         });
 
 });
