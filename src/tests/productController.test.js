@@ -207,6 +207,19 @@ describe("Product Controller", () => {
           message: "product not found",
         });
       });
+
+      it('should return 500 when fetching product by id fails', async () => {
+        const error = new Error('Database error');
+        Product.findById.mockRejectedValue(error);
+        
+        await productController.getProductById(req, res);
+        
+        expect(res.status).toHaveBeenCalledWith(500);
+        expect(res.json).toHaveBeenCalledWith({ 
+          message: 'Error fetching product', 
+          error: error 
+        });
+      });
     });
   });
 });
