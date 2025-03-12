@@ -167,6 +167,32 @@ describe("Product Controller", () => {
             
 
               });
+
+
+
+
+
+              describe('getAllProduct', () => {
+
+
+                it('should return all products', async () => {
+                    const mockProducts = [
+                      { _id: 'product1', name: 'Product 1' },
+                      { _id: 'product2', name: 'Product 2' }
+                    ];
+                    
+                    Product.find.mockResolvedValue(mockProducts);
+                    
+                    await productController.getAllProduct(req, res);
+                    
+                    expect(Product.find).toHaveBeenCalled();
+                    expect(res.json).toHaveBeenCalledWith(mockProducts);
+                  });
+
+
+
+              })
+
         });
 
 });
