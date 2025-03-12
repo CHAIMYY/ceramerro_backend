@@ -51,8 +51,22 @@ describe("Product Controller", () => {
           });
 
 
-
-
+          it('should return 500 when product creation fails', async () => {
+            const error = new Error('Database error');
+            const mockProductInstance = {
+              save: jest.fn().mockRejectedValue(error)
+            };
+            Product.mockImplementation(() => mockProductInstance);
+            
+            await productController.createProduct(req, res);
+            
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.error).toHaveBeenCalledWith({ 
+              message: 'failed creating a product', 
+              error: error 
+            });
+          });
+        
 
 
 
