@@ -41,7 +41,6 @@ exports.addComment = async (req, res) => {
 };
 
 
-
 exports.deleteComment = async (req, res) => {
   try {
     const id = req.params.id;

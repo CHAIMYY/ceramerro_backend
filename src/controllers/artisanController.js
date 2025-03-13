@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Product = require("../models/productModel");
 const User = require('../models/userModel'); 
 const Blog = require('../models/blogModel'); 
+const Order = require('../models/orderModel');
 
 exports.getProductsByArtisan = async (req, res) => {
     try {
@@ -28,7 +29,6 @@ exports.getProductsByArtisan = async (req, res) => {
       });
     }
   };
-
 
 
 exports.updateProfile = async (req, res) => {
@@ -100,3 +100,22 @@ exports.getSellerStatistics = async (req, res) => {
     }
   };
   
+  exports.getArtisanOrders = async (req, res) => {
+    
+    
+    try {
+      const artisanId = req.user._id; 
+  console.log('hiiiiii');
+      const orders = await Order.find({ 'items.artisan': artisanId })
+        .populate('user', 'name email')
+        .populate('items.product', 'name price');
+  
+      res.status(200).json({ success: true, orders });
+    } catch (error) {
+      res.status(500).json({ error: 'Server error' });
+    }
+  };
+  
+
+
+exports.getArtisanPosts= async (req, res)=>{};

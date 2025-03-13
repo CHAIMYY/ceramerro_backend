@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-// const cors = require('cors');
+const cors = require('cors');
 const app = express();
 const router = require('./src/routes/router');
 const dbConnect = require('./src/config/config');
@@ -23,12 +23,14 @@ class Server {
        
 
         this.app.use(express.json());
-        this.app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+        this.app.use(cors({
+            origin: "http://localhost:3000"
+        }));
         
     }
 
     routing() {
-        this.app.use('/', router);
+        this.app.use('/api', router);
     }
     
     start() {
