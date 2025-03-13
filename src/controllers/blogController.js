@@ -84,4 +84,12 @@ exports.likeBlogPost = async (req, res, next) => {
   }
 };
 
-exports.getAllPosts = async (req, res)=>{};
+exports.getAllPosts = async (req, res)=>{
+  try {
+    const posts = await Blog.find();
+    res.json(posts);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching posts', error: err });
+  }
+};
+
