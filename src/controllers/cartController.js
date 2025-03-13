@@ -33,32 +33,55 @@ exports.addToCart = async (req, res) => {
 exports.updateProductQuantity = async (req, res) => {
     try {
         const { product, quantity } = req.body;
-      const user = req.user._id
-        let cart = await Cart.findOne({ user: user }).populate('articles.product').exec();
+       
+        
+        const user = req.user._id;
+     
+        let cart = await Cart.findOne({ user: user });
 
-        if (cart) {
-            
-            const productInCart = cart.articles.find(item => item.product === product);
-
-            if (productInCart) {
-             
-                productInCart.quantity = quantity;
-
-                if (quantity <= 0) {
-                    cart.articles = cart.articles.filter(item => item.product._id.toString() !== product);
-                }
-
-                await cart.save();
-
-                return res.status(200).json(cart);  
+        if (!cart) {
+            console.log("No cart found, creating a new one");
+            cart = new Cart({ 
+                user: user,
+                articles: []
+            });
+        }
+        
+        const productIndex = cart.articles.findIndex(item => 
+            item.product && item.product.toString() === product
+        );
+        
+        if (productIndex === -1) {
+        
+            if (quantity > 0) {
+                console.log("Adding new product to cart");
+                cart.articles.push({ product, quantity });
             } else {
-                return res.status(404).json({ message: 'Product not found in cart' });
+                return res.status(400).json({ message: 'Cannot add product with zero or negative quantity' });
             }
         } else {
-            return res.status(404).json({ message: 'Cart not found' });
+            
+            if (quantity > 0) {
+                console.log("Updating product quantity");
+                cart.articles[productIndex].quantity = quantity;
+            } else {
+              
+                console.log("Removing product from cart");
+                cart.articles = cart.articles.filter(item => 
+                    item.product.toString() !== product
+                );
+            }
         }
+
+   
+        await cart.save();
+        
+        // await cart.populate('articles.product');
+        
+        return res.status(200).json(cart);
+        
     } catch (error) {
-        console.error(error);
+        console.error("Error details:", error);
         res.status(500).json({ error: error.message });
     }
 };
