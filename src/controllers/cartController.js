@@ -85,11 +85,9 @@ exports.updateProductQuantity = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
 exports.removeFromCart = async (req, res) => {
     try {
-     
-        const  productId  = req.body.produit;
+        const productId = req.body.product;
 
         if (!req.user) {
             return res.status(401).json({ message: 'User not authenticated' });
@@ -108,9 +106,12 @@ exports.removeFromCart = async (req, res) => {
         }
         
         const initialLength = cart.articles.length;
-        
+    
+
         cart.articles = cart.articles.filter(item => 
-            item._id.toString() !== productId.toString());
+            item.product.toString() !== productId.toString());
+        
+        console.log("Cart articles after filter:", JSON.stringify(cart.articles, null, 2));
         
         if (cart.articles.length === initialLength) {
             return res.status(404).json({ message: 'Product not found in cart' });
