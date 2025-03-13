@@ -81,19 +81,9 @@ const userSchema = new mongoose.Schema(
         default: null, 
       },
     },
-    process: [
-      {
-        title: String,
-        description: String,
-        default: [], 
-      },
-    ],
+   
     
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      default: null, 
-    },
+  
   },
   { timestamps: true }
 );

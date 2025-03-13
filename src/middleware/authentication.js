@@ -26,7 +26,7 @@ exports.authenticate = async (req, res, next) => {
 };
 
 
-const isAdmin = (req, res, next) => {
+exports.isAdmin = (req, res, next) => {
     if (req.user.role !== 'admin') {
       return res.sendStatus(403);
     }

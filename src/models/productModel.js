@@ -4,13 +4,11 @@ const ProduitSchema = new mongoose.Schema({
     nom: String,
     description: String,
     prix: Number,
-    stock: Number,
     category: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Category',
-      required: true
+      type: String,
+      enum: ['pottery', 'sculpture', 'tableware', 'other'],
+      default: null, 
     },
-
     stock: {
       type: Number,
       required: [true, 'Please add stock quantity'],

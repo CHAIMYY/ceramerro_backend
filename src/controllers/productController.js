@@ -4,14 +4,23 @@ const Product = require("../models/productModel");
 exports.createProduct = async (req, res) => {
   try {
     const userId = req.user._id
-    const product = new Product(req.body);
+
+    console.log('userId makaynch');
+    console.log('userId create', userId);
+    
+
+    const product = new Product({ ...req.body, userId });
     
     await product.save();
     return res.status(201).json(product);
   } catch (err) {
     return res
       .status(500)
-      .error({ message: "failed creating a product", error: err });
+      // .json({ message: "failed creating a product", error: err });
+      .json({ 
+        message: "Failed creating a product", 
+        error: err.message || err 
+      });
   }
 };
 
@@ -40,5 +49,25 @@ exports.deleteProduct = async (req, res) => {
     return res
       .status(500)
       .error({ message: "failed deleting a product", error: err });
+  }
+};
+
+
+exports.getAllProduct = async (req, res) => {
+  try {
+    const productList = await Product.find();
+    res.json(productList);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching products list', error: err });
+  }
+};
+
+exports.getProductById = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) return res.status(404).json({ message: 'product not found' });
+    res.json(product);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching product', error: err });
   }
 };

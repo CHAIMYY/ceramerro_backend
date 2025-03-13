@@ -27,4 +27,8 @@ exports.getStatistics = async (req, res)=> {
       console.error('Error fetching website statistics:', error);
       res.status(500).json({ message: error.message });
     }
-  }
+  };
+
+exports.banUsers = async (res, req)=> {};
+
+exports.featureArtisan = async (req, res)=>{};

@@ -52,84 +52,6 @@ exports.deletePost = async (req, res) => {
   }
 };
 
-
-// exports.deleteComment = async (req, res) => {
-//   try {
-//     const { postId, commentId } = req.params;
-//     const userId = req.user.id;
-//     // req.userData.userId
-//     const post = await Blog.findById(postId);
-
-//     if (!post) {
-//       return res.status(404).json({ message: "Post not found" });
-//     }
-
-//     const comment = post.comments.id(commentId);
-
-//     if (!comment) {
-//       return res.status(404).json({ message: "Comment not found" });
-//     }
-
-//     if (comment.postedBy.toString() !== userId) {
-//       return res
-//         .status(403)
-//         .json({
-//           message: "Unauthorized: You can only delete your own comments",
-//         });
-//     }
-
-//     post.comments.pull(commentId);
-
-//     await post.save();
-
-//     res.json({ message: "Comment deleted successfully", postId, commentId });
-//   } catch (err) {
-//     console.error("Error deleting comment:", err);
-//     res.status(500).json({ message: "Failed to delete comment" });
-//   }
-// };
-
-
-  
- 
-// exports.deleteComment = async (req, res) => {
-
-//     try {
-//       const { postId, commentId } = req.params;
-//       console.log(postId, commentId);
-//       const userId = req.user._id; 
-//       console.log('okkkkkkkkk', userId);
-      
-    
-//       const post = await Blog.findById(postId);
-      
-//       if (!post) {
-//         return res.status(404).json({ message: "Post not found" });
-//       }
-      
-//       const comment = post.comments.id(commentId);
-      
-//       if (!comment) {
-//         return res.status(404).json({ message: "Comment not found" });
-//       }
-      
-//       if (comment.postedBy.toString() !== userId.toString()) {
-//         return res.status(403).json({ message: "Unauthorized: You can only delete your own comments" });
-//       }
-      
-//       post.comments.pull(commentId);
-      
-//       await post.save();
-      
-//       res.json({ message: "Comment deleted successfully" });
-      
-//     } catch (err) {
-//       console.error("Error deleting comment:", err);
-//       res.status(500).json({ message: "Failed to delete comment" });
-//     }
-//   };
-
-
 exports.likeBlogPost = async (req, res, next) => {
   try {
     const blogPost = await BlogPost.findById(req.params.id);
@@ -161,3 +83,5 @@ exports.likeBlogPost = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.getAllPosts = async (req, res)=>{};

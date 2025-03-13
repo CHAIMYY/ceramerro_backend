@@ -3,21 +3,6 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 
-// exports.register = async function (req, res) {
-//   try {
-//     const newUser = new User(req.body);
-//     newUser.hash_password = bcrypt.hashSync(req.body.password, 10);
-//     //10 Salt Rounds
-//     //   Salt is a random string added to the password before hashing.
-//     const user = await newUser.save();
-//     user.hash_password = undefined;
-//     return res.json(user);
-//   } catch (err) {
-//     console.log("Registration Error: ", err);
-//     return res.status(400).send({ message: err.message });
-//   }
-// };
-
 
 exports.register = async function (req, res) {
   try {
@@ -70,8 +55,6 @@ exports.register = async function (req, res) {
   }
 };
 
-
-
 exports.login = async function (req, res) {
   try {
     const user = await User.findOne({ email: req.body.email });
@@ -86,7 +69,7 @@ const payload = {
 
   email: user.email, lastname: user.lastname, firstname: user.firstname, _id: user._id 
 }
-console.log(payload);
+// console.log(payload);
 
     const token = jwt.sign(
       payload,
@@ -109,3 +92,8 @@ exports.getAllartisans = async (req, res) => {
       .json({ message: "Error fetching artisans list", error: err });
   }
 };
+
+exports.getUserById = async (req, res)=>{};
+
+
+exports.getAllUsers = async (req, res)=>{};
