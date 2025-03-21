@@ -11,14 +11,8 @@ exports.addComment = async (req, res) => {
     }
 
     const { text } = req.body;
-
     const postedBy = req.user._id;
-
-    // console.log("===>"+postedBy);
-
     const postId = req.params.id;
-    // console.log("2====>",postId);
-    // console.log(text);
 
     if (!text) {
       return res.status(400).json({ message: "Comment text is required" });
@@ -36,33 +30,39 @@ exports.addComment = async (req, res) => {
 
     await newComment.save();
 
-    res.status(201).json(newComment);
-    // console.log(newComment);
+   
+    const populatedComment = await Comment.findById(newComment._id).populate(
+      "postedBy",
+      "firstname image"
+    );
+
+    res.status(201).json(populatedComment);
   } catch (err) {
     console.error("Error adding comment:", err);
     res.status(500).json({ message: "Failed to add comment" });
   }
 };
 
+
 exports.deleteComment = async (req, res) => {
   try {
-    const id = req.body.id;
+    const id = req.params.id;
     // console.log("idddddd",id);
-
+    
     const userId = req.user._id;
     // console.log("useeeeeeer",userId.toString());
+    
 
     const comment = await Comment.findById(id);
     // console.log("commmeeentarioooos",comment.postedBy.toString());
+    
 
     if (!comment) {
       return res.status(404).json({ message: "Comment not found" });
     }
-
+  
     if (comment.postedBy.toString() !== userId.toString()) {
-      return res
-        .status(403)
-        .json({ message: "You are not authorized to delete this comment" });
+      return res.status(403).json({ message: "You are not authorized to delete this comment" });
     }
 
     await Comment.findByIdAndDelete(id);
@@ -71,5 +71,21 @@ exports.deleteComment = async (req, res) => {
   } catch (err) {
     console.error("Error deleting comment:", err);
     res.status(500).json({ message: "Failed to delete comment" });
+  }
+};
+
+exports.getcomments = async (req, res) => {
+  try {
+    const postid = req.params.id;
+
+    const comments = await Comment.find({ postId: postid }).populate({
+      path: 'postedBy',
+      select: 'firstname lastname image', 
+    });
+
+    res.status(200).json({ success: true, comments });
+  } catch (error) {
+    console.error('Error fetching comments:', error);
+    res.status(500).json({ error: 'Server error' });
   }
 };

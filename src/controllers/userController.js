@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
+const Product = require("../models/productModel");
 
 
 exports.register = async function (req, res) {
@@ -55,32 +56,71 @@ exports.register = async function (req, res) {
   }
 };
 
+// exports.login = async function (req, res) {
+//   try {
+//     const user = await User.findOne({ email: req.body.email });
+
+//     if (!user || !user.comparePassword(req.body.password)) {
+//       return res
+//         .status(401)
+//         .json({ message: "Authentication failed. Invalid user or password." });
+//     }
+
+// const payload = {
+
+//   email: user.email, lastname: user.lastname, firstname: user.firstname, _id: user._id 
+// }
+// // console.log(payload);
+
+//     const token = jwt.sign(
+//       payload,
+//       process.env.JWT_SECRET || "RESTFULAPIs"
+//     );
+
+//     return res.json({ token });
+//   } catch (err) {
+//     return res.status(500).send({ message: "Error in authentication" });
+//   }
+// };
+
+
+
 exports.login = async function (req, res) {
   try {
     const user = await User.findOne({ email: req.body.email });
-
+    
     if (!user || !user.comparePassword(req.body.password)) {
       return res
         .status(401)
         .json({ message: "Authentication failed. Invalid user or password." });
     }
 
-const payload = {
-
-  email: user.email, lastname: user.lastname, firstname: user.firstname, _id: user._id 
-}
-// console.log(payload);
-
+    const payload = {
+      email: user.email,
+      lastname: user.lastname,
+      firstname: user.firstname,
+      _id: user._id,
+      role: user.role 
+    }
+    
     const token = jwt.sign(
       payload,
       process.env.JWT_SECRET || "RESTFULAPIs"
     );
+    
 
-    return res.json({ token });
+    return res.json({ 
+      token,
+      userType: user.role 
+    });
   } catch (err) {
+    console.error("Login error:", err);
     return res.status(500).send({ message: "Error in authentication" });
   }
 };
+
+
+
 
 exports.getAllartisans = async (req, res) => {
   try {
@@ -93,7 +133,37 @@ exports.getAllartisans = async (req, res) => {
   }
 };
 
-exports.getUserById = async (req, res)=>{};
+// exports.getArtisanById = async (req, res)=>{
+
+//   try {
+//     const artisan = await User.findById(req.params.id);
+//     if (!artisan) return res.status(404).json({ message: 'artisan not found' });
+//     res.json(artisan);
+//   } catch (err) {
+//     res.status(500).json({ message: 'Error fetching artisan', error: err });
+//   }
+// };
+
+exports.getArtisanById = async (req, res) => {
+  try {
+   
+    const artisan = await User.findById(req.params.id);
+    if (!artisan) return res.status(404).json({ message: 'Artisan not found' });
+    
+  
+   
+    const products = await Product.find({ userId: req.params.id });
+    
+  
+    const artisanWithProducts = {
+      ...artisan.toObject(), 
+      products: products 
+    };
+    
+    res.json(artisanWithProducts);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching artisan', error: err });
+  }
+};
 
 
-exports.getAllUsers = async (req, res)=>{};

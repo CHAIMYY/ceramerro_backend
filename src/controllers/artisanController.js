@@ -31,50 +31,68 @@ exports.getProductsByArtisan = async (req, res) => {
   };
 
 
-exports.updateProfile = async (req, res) => {
-  try {
-    const userId = req.user.id; 
-    const user = await User.findById(userId);
-
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+  exports.updateProfile = async (req, res) => {
+    try {
+      const userId = req.user.id;
+      const user = await User.findById(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      
+      const updatedFields = {
+        firstname: req.body.firstname || user.firstname,
+        lastname: req.body.lastname || user.lastname,
+        email: req.body.email || user.email,
+        bio: req.body.bio || user.bio,
+        location: req.body.location || user.location,
+        specialty: req.body.specialty || user.specialty,
+        category: req.body.category || user.category,
+        socialMedia: {
+          instagram: req.body.socialMedia?.instagram || user.socialMedia.instagram,
+          website: req.body.socialMedia?.website || user.socialMedia.website,
+          facebook: req.body.socialMedia?.facebook || user.socialMedia.facebook,
+          twitter: req.body.socialMedia?.twitter || user.socialMedia.twitter,
+        },
+        image: req.body.image || user.image,
+        gallery: req.body.gallery || user.gallery,
+      };
+      
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        updatedFields,
+        { new: true }
+      );
+      
+      res.status(200).json({
+        message: 'Profile updated successfully',
+        user: updatedUser,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
     }
-
-    
-    const updatedFields = {
-      firstname: req.body.firstname || user.firstname,
-      lastname: req.body.lastname || user.lastname,
-      email: req.body.email || user.email,
-      bio: req.body.bio || user.bio,
-      location: req.body.location || user.location,
-      specialty: req.body.specialty || user.specialty,
-      category: req.body.category || user.category,
-      socialMedia: {
-        instagram: req.body.socialMedia?.instagram || user.socialMedia.instagram,
-        website: req.body.socialMedia?.website || user.socialMedia.website,
-        facebook: req.body.socialMedia?.facebook || user.socialMedia.facebook,
-        twitter: req.body.socialMedia?.twitter || user.socialMedia.twitter,
-      },
-      image: req.body.image || user.image,
-      gallery: req.body.gallery || user.gallery,
-    };
-
-
-    const updatedUser = await User.findByIdAndUpdate(userId, updatedFields, {
-      new: true,
-    });
-
-    
-    res.status(200).json({
-      message: 'Profile updated successfully',
-      user: updatedUser,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
-  }
-};
-
+  };
+  
+ 
+  exports.getArtisanProfile = async (req, res) => {
+    try {
+      const userId = req.user.id;
+      const user = await User.findById(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      
+      res.status(200).json({
+        message: 'Profile retrieved successfully',
+        user: user
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  };
 
 exports.getSellerStatistics = async (req, res) => {
     try {
@@ -87,11 +105,15 @@ exports.getSellerStatistics = async (req, res) => {
   
       const totalArtisanProducts = await Product.countDocuments({ userId: artisan._id });
       const totalArtisanPosts = await Blog.countDocuments({ creator: artisan._id });
+      const totalArtisanOrders = await Order.countDocuments({
+        items: { $elemMatch: { artisan: artisan._id } }
+      });
   
       res.status(200).json({
         sellerStatistics: {
           totalProducts: totalArtisanProducts,
-          totalPosts: totalArtisanPosts
+          totalPosts: totalArtisanPosts,
+          totalOrders: totalArtisanOrders
         }
       });
     } catch (error) {
@@ -117,5 +139,5 @@ exports.getSellerStatistics = async (req, res) => {
   };
   
 
+  
 
-exports.getArtisanPosts= async (req, res)=>{};

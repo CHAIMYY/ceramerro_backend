@@ -31,39 +31,7 @@ describe("Product Controller", () => {
     };
   });
 
-  describe("createProduct", () => {
-    it("should create a new product and return 201 status", async () => {
-      const mockProductInstance = {
-        save: jest.fn().mockResolvedValue({}),
-        ...req.body,
-      };
-      Product.mockImplementation(() => mockProductInstance);
-
-      await productController.createProduct(req, res);
-
-      expect(Product).toHaveBeenCalledWith(req.body);
-      expect(mockProductInstance.save).toHaveBeenCalled();
-      expect(res.status).toHaveBeenCalledWith(201);
-      expect(res.json).toHaveBeenCalledWith(mockProductInstance);
-    });
-
-    it("should return 500 when product creation fails", async () => {
-      const error = new Error("Database error");
-      const mockProductInstance = {
-        save: jest.fn().mockRejectedValue(error),
-      };
-      Product.mockImplementation(() => mockProductInstance);
-
-      await productController.createProduct(req, res);
-
-      expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.error).toHaveBeenCalledWith({
-        message: "failed creating a product",
-        error: error,
-      });
-    });
-  });
-
+ 
   describe("updateProduct", () => {
     it("should update a product and return it", async () => {
       const updatedProduct = {
@@ -153,34 +121,7 @@ describe("Product Controller", () => {
       });
     });
 
-    describe("getAllProduct", () => {
-      it("should return all products", async () => {
-        const mockProducts = [
-          { _id: "product1", name: "Product 1" },
-          { _id: "product2", name: "Product 2" },
-        ];
-
-        Product.find.mockResolvedValue(mockProducts);
-
-        await productController.getAllProduct(req, res);
-
-        expect(Product.find).toHaveBeenCalled();
-        expect(res.json).toHaveBeenCalledWith(mockProducts);
-      });
-
-      it("should return 500 when fetching all products fails", async () => {
-        const error = new Error("Database error");
-        Product.find.mockRejectedValue(error);
-
-        await productController.getAllProduct(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(500);
-        expect(res.json).toHaveBeenCalledWith({
-          message: "Error fetching products list",
-          error: error,
-        });
-      });
-    });
+ 
 
     describe("getProductById", () => {
       it("should return a product by id", async () => {

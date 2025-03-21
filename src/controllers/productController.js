@@ -53,10 +53,25 @@ exports.deleteProduct = async (req, res) => {
 };
 
 
+
 exports.getAllProduct = async (req, res) => {
   try {
-    const productList = await Product.find();
-    res.json(productList);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 6;
+    const skip = (page - 1) * limit;
+
+    const total = await Product.countDocuments();
+    const products = await Product.find()
+      .skip(skip)
+      .limit(limit)
+      .populate('userId', 'name'); 
+
+    res.json({
+      products,
+      total,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit)
+    });
   } catch (err) {
     res.status(500).json({ message: 'Error fetching products list', error: err });
   }

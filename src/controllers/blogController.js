@@ -93,3 +93,17 @@ exports.getAllPosts = async (req, res)=>{
   }
 };
 
+
+exports.getPostById = async (req, res) => {
+  try {
+    const post = await Blog.findById(req.params.id).populate({
+      path: 'creator',
+      select: 'firstname lastname image', 
+    });;
+    if (!post) return res.status(404).json({ message: 'post not found' });
+    res.json(post);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching post', error: err });
+  }
+};
+
