@@ -12,36 +12,29 @@ Ceramerro is a specialized e-commerce platform designed for ceramic artisans to 
   - JWT-based authentication
   - Role-based access (Admin, Artisan, Customer)
   - Secure password management
-  
-  
 - **Artisan Management**
   - Artisan profile creation and management
   - Sales dashboard and analytics
   - Order management system
-  
 - **Product Management**
   - CRUD operations for ceramic products
   - Product filtering and search capabilities
   - Limited editions and collection management
   - Ratings and reviews system
-  
 - **E-commerce Functionality**
   - Shopping cart management
   - Wishlist functionality
   - Secure payment processing
   - Order tracking and history
   - Revenue distribution to artisans
-  
 - **Content Management**
   - Blog article management
   - Artisan interview content
   - Care guides and product information
-  
 - **Communication System**
   - Messaging between customers and artisans
   - Notification system
   - Email templates for transactional emails
-  
 - **Internationalization**
   - Multi-language support
   - Multi-currency support
@@ -53,7 +46,6 @@ Ceramerro is a specialized e-commerce platform designed for ceramic artisans to 
 - **Framework**: Express.js
 - **Database**: MongoDB with Mongoose
 - **Authentication**: JWT
-
 
 ## 🔧 Setup and Installation
 
@@ -68,17 +60,20 @@ Ceramerro is a specialized e-commerce platform designed for ceramic artisans to 
 ### Installation Steps
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/ceramerro/backend.git
    cd ceramerro-backend
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Set up environment variables:
+
    ```bash
    cp .env.example .env
    # Edit .env with your configuration
@@ -88,7 +83,6 @@ Ceramerro is a specialized e-commerce platform designed for ceramic artisans to 
    ```bash
    npm run dev
    ```
-
 
 ## 🧪 Testing
 
@@ -107,6 +101,7 @@ npm test -- --grep="Authentication"
 ### Deployment to Production
 
 1. Build the project:
+
    ```bash
    npm run build
    ```
@@ -119,6 +114,7 @@ npm test -- --grep="Authentication"
 ### Deployment with Docker
 
 1. Build the Docker image:
+
    ```bash
    docker build -t ceramerro-backend .
    ```
@@ -149,7 +145,6 @@ This project is licensed under the [MIT License](LICENSE).
 ## 👥 Contributors
 
 - [HOUAS CHAIMAA](https://github.com/CHAIMYY)
-
 
 ## 🤝 Support
 

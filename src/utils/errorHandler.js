@@ -1,12 +1,11 @@
 class ErrorHandler extends Error {
-    constructor(message, statusCode) {
-      super(message);
-      this.statusCode = statusCode;
-    }
+  constructor(message, statusCode) {
+    super(message);
+    this.statusCode = statusCode;
   }
-  
-  module.exports = ErrorHandler;
+}
 
+module.exports = ErrorHandler;
 
 //   What is super in JavaScript?
 // In JavaScript, super is a special keyword used inside a subclass (a class that extends another class) to call methods from the parent class.

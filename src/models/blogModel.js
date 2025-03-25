@@ -17,7 +17,7 @@ const BlogSchema = new mongoose.Schema(
     },
     creator: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", 
+      ref: "User",
       required: true,
     },
     datePublication: {
@@ -33,9 +33,9 @@ const BlogSchema = new mongoose.Schema(
     likes: {
       type: Number,
       default: 0,
-    }
+    },
   },
-  { timestamps: true } 
+  { timestamps: true },
 );
 
 const Blog = mongoose.model("Blog", BlogSchema);

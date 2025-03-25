@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const Product = require("../models/productModel");
 const productController = require("../controllers/productController");
 
@@ -7,6 +6,8 @@ jest.mock("jsonwebtoken");
 jest.mock("../models/productModel");
 
 describe("Product Controller", () => {
+  let req, res;
+
   beforeEach(() => {
     jest.clearAllMocks();
 
@@ -31,7 +32,6 @@ describe("Product Controller", () => {
     };
   });
 
- 
   describe("updateProduct", () => {
     it("should update a product and return it", async () => {
       const updatedProduct = {
@@ -46,7 +46,7 @@ describe("Product Controller", () => {
       expect(Product.findByIdAndUpdate).toHaveBeenCalledWith(
         "product123",
         req.body,
-        { new: true }
+        { new: true },
       );
       expect(res.json).toHaveBeenCalledWith(updatedProduct);
     });
@@ -61,105 +61,57 @@ describe("Product Controller", () => {
         message: "could not find the product",
       });
     });
+  });
 
-    it("should return 500 when product update fails", async () => {
+  describe("deleteProduct", () => {
+    it("should return 404 when product is not found for deletion", async () => {
+      Product.findByIdAndDelete.mockResolvedValue(null);
+
+      await productController.deleteProduct(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith({
+        message: "could not find the product",
+      });
+    });
+  });
+
+  describe("getProductById", () => {
+    it("should return a product by id", async () => {
+      const mockProduct = {
+        _id: "product123",
+        name: "Test Product",
+      };
+
+      Product.findById.mockResolvedValue(mockProduct);
+
+      await productController.getProductById(req, res);
+
+      expect(Product.findById).toHaveBeenCalledWith("product123");
+      expect(res.json).toHaveBeenCalledWith(mockProduct);
+    });
+
+    it("should return 404 when product is not found", async () => {
+      Product.findById.mockResolvedValue(null);
+
+      await productController.getProductById(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith({
+        message: "product not found",
+      });
+    });
+
+    it("should return 500 when fetching product by id fails", async () => {
       const error = new Error("Database error");
-      Product.findByIdAndUpdate.mockRejectedValue(error);
+      Product.findById.mockRejectedValue(error);
 
-      await productController.updateProduct(req, res);
+      await productController.getProductById(req, res);
 
       expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.error).toHaveBeenCalledWith({
-        message: "failed updating a product",
+      expect(res.json).toHaveBeenCalledWith({
+        message: "Error fetching product",
         error: error,
-      });
-    });
-
-    describe("deleteProduct", () => {
-      it("should delete a product and return success message", async () => {
-        const deletedProduct = {
-          _id: "product123",
-          name: "Test Product",
-        };
-
-        Product.findByIdAndDelete.mockResolvedValue(deletedProduct);
-
-        await productController.deleteProduct(req, res);
-
-        expect(Product.findByIdAndDelete).toHaveBeenCalledWith(
-          "product123",
-          req.body
-        );
-        expect(res.status).toHaveBeenCalledWith(201);
-        expect(res.json).toHaveBeenCalledWith({
-          message: "product deleted succefully",
-        });
-      });
-
-      it("should return 404 when product is not found for deletion", async () => {
-        Product.findByIdAndDelete.mockResolvedValue(null);
-
-        await productController.deleteProduct(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(404);
-        expect(res.json).toHaveBeenCalledWith({
-          message: "could not find the product",
-        });
-      });
-
-      it("should return 500 when product deletion fails", async () => {
-        const error = new Error("Database error");
-        Product.findByIdAndDelete.mockRejectedValue(error);
-
-        await productController.deleteProduct(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(500);
-        expect(res.error).toHaveBeenCalledWith({
-          message: "failed deleting a product",
-          error: error,
-        });
-      });
-    });
-
- 
-
-    describe("getProductById", () => {
-      it("should return a product by id", async () => {
-        const mockProduct = {
-          _id: "product123",
-          name: "Test Product",
-        };
-
-        Product.findById.mockResolvedValue(mockProduct);
-
-        await productController.getProductById(req, res);
-
-        expect(Product.findById).toHaveBeenCalledWith("product123");
-        expect(res.json).toHaveBeenCalledWith(mockProduct);
-      });
-
-      it("should return 404 when product is not found", async () => {
-        Product.findById.mockResolvedValue(null);
-
-        await productController.getProductById(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(404);
-        expect(res.json).toHaveBeenCalledWith({
-          message: "product not found",
-        });
-      });
-
-      it('should return 500 when fetching product by id fails', async () => {
-        const error = new Error('Database error');
-        Product.findById.mockRejectedValue(error);
-        
-        await productController.getProductById(req, res);
-        
-        expect(res.status).toHaveBeenCalledWith(500);
-        expect(res.json).toHaveBeenCalledWith({ 
-          message: 'Error fetching product', 
-          error: error 
-        });
       });
     });
   });

@@ -1,19 +1,20 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const ProduitSchema = new mongoose.Schema({
+const ProduitSchema = new mongoose.Schema(
+  {
     nom: String,
     description: String,
     prix: Number,
     category: {
       type: String,
-      enum: ['pottery', 'sculpture', 'tableware', 'other'],
-      default: null, 
+      enum: ["pottery", "sculpture", "tableware", "other"],
+      default: null,
     },
     stock: {
       type: Number,
-      required: [true, 'Please add stock quantity'],
-      min: [0, 'Stock cannot be negative'],
-      default: 0
+      required: [true, "Please add stock quantity"],
+      min: [0, "Stock cannot be negative"],
+      default: 0,
     },
     dimensions: {
       height: Number,
@@ -21,34 +22,33 @@ const ProduitSchema = new mongoose.Schema({
       depth: Number,
       unit: {
         type: String,
-        enum: ['in', 'cm'],
-        default: 'in'
-      }
+        enum: ["in", "cm"],
+        default: "in",
+      },
     },
     weight: {
       value: Number,
       unit: {
         type: String,
-        enum: ['lb', 'kg', 'oz', 'g'],
-        default: 'lb'
-      }
+        enum: ["lb", "kg", "oz", "g"],
+        default: "lb",
+      },
     },
     status: {
       type: String,
-      enum: ['active', 'draft', 'outOfStock'],
-      default: 'active'
+      enum: ["active", "draft", "outOfStock"],
+      default: "active",
     },
     featured: {
       type: Boolean,
-      default: false
+      default: false,
     },
     images: [String],
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
-  
 
-const Product = mongoose.model('Product' , ProduitSchema);
+const Product = mongoose.model("Product", ProduitSchema);
 
 module.exports = Product;

@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const Comment = require("../models/commentModel");
 const Blog = require("../models/blogModel");
 
@@ -30,10 +29,9 @@ exports.addComment = async (req, res) => {
 
     await newComment.save();
 
-   
     const populatedComment = await Comment.findById(newComment._id).populate(
       "postedBy",
-      "firstname image"
+      "firstname image",
     );
 
     res.status(201).json(populatedComment);
@@ -43,26 +41,25 @@ exports.addComment = async (req, res) => {
   }
 };
 
-
 exports.deleteComment = async (req, res) => {
   try {
     const id = req.params.id;
     // console.log("idddddd",id);
-    
+
     const userId = req.user._id;
     // console.log("useeeeeeer",userId.toString());
-    
 
     const comment = await Comment.findById(id);
     // console.log("commmeeentarioooos",comment.postedBy.toString());
-    
 
     if (!comment) {
       return res.status(404).json({ message: "Comment not found" });
     }
-  
+
     if (comment.postedBy.toString() !== userId.toString()) {
-      return res.status(403).json({ message: "You are not authorized to delete this comment" });
+      return res
+        .status(403)
+        .json({ message: "You are not authorized to delete this comment" });
     }
 
     await Comment.findByIdAndDelete(id);
@@ -79,13 +76,13 @@ exports.getcomments = async (req, res) => {
     const postid = req.params.id;
 
     const comments = await Comment.find({ postId: postid }).populate({
-      path: 'postedBy',
-      select: 'firstname lastname image', 
+      path: "postedBy",
+      select: "firstname lastname image",
     });
 
     res.status(200).json({ success: true, comments });
   } catch (error) {
-    console.error('Error fetching comments:', error);
-    res.status(500).json({ error: 'Server error' });
+    console.error("Error fetching comments:", error);
+    res.status(500).json({ error: "Server error" });
   }
 };
